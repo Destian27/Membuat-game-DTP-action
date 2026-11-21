@@ -144,7 +144,7 @@ func _ready() -> void:
 	character_rig = CharacterRig.new()
 	character_rig.name = "CharacterRig3D"
 	add_child(character_rig)
-	character_rig.setup(role, ztype, team)
+	character_rig.setup(role, ztype, team, 1.0, htype)
 
 	# bayangan di tanah
 	var shadow_tex = load("res://assets/shadow.png")
@@ -261,7 +261,7 @@ func set_role(r: String, zt: String = "") -> void:
 	hh = HEIGHT * scl
 	if character_rig != null:
 		character_rig.scale_factor = scl
-		character_rig.apply_role(r, zt)
+		character_rig.apply_role(r, zt, htype)
 	var idle: Array = frames["idle"]
 	if not idle.is_empty():
 		sprite.texture = idle[0]
@@ -459,6 +459,11 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0.0
 	move_and_slide()
 	moving = Vector2(velocity.x, velocity.z).length() > 0.3
+	var facing := to_t if target != null else Vector3(velocity.x, 0.0, velocity.z)
+	facing.y = 0.0
+	if facing.length_squared() > 0.001:
+		var target_yaw := atan2(-facing.x, -facing.z)
+		rotation.y = lerp_angle(rotation.y, target_yaw, minf(1.0, delta * 8.0))
 
 	# FITUR PINTU RUSAK + JENDELA: zombie/samurai yang menabrak pintu rumah akan merusaknya,
 	# dan melompat kalau terhalang benda rendah (ambang jendela 0.55 m) saat mengejar target.
@@ -689,6 +694,11 @@ func _process(delta: float) -> void:
 	if dead:
 		return
 	if character_rig != null:
+		var local_velocity := global_transform.basis.inverse() * Vector3(velocity.x, 0.0, velocity.z)
+		var local_direction := Vector2(local_velocity.x, -local_velocity.z)
+		if local_direction.length_squared() > 0.001:
+			local_direction = local_direction.normalized()
+		var speed_ratio := Vector2(velocity.x, velocity.z).length() / maxf(cur_speed(), 0.01)
 		character_rig.set_motion(
 			moving,
 			shoot_flash > 0.0,
@@ -698,7 +708,10 @@ func _process(delta: float) -> void:
 			run_t > 0.0,
 			invis_t > 0.0,
 			false,
-			is_on_floor()
+			is_on_floor(),
+			local_direction,
+			speed_ratio,
+			Vector2(velocity.x, velocity.z).length()
 		)
 	anim_t += delta
 	shoot_flash = maxf(shoot_flash - delta, 0.0)
