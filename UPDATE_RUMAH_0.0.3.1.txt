@@ -1,0 +1,17 @@
+UPDATE CRISIS ACTION DTP - v0.0.3.1 (patch rumah)
+
+LANTAI RUMAH
+- Perbaikan lantai berkedip (z-fighting): permukaan atas slab lantai rumah dulu tepat di y=0, sama dengan tanah arena.
+  Sekarang slab dinaikkan 4 cm sehingga tidak berimpit lagi.
+
+PINTU
+- Pintu rumah tidak lagi membuka otomatis. Pintu selalu tertutup dan harus dirusak.
+- Pintu bisa dihancurkan dengan tembakan, tebasan/cakaran pemain, dan cakaran bot zombie/samurai (HP pintu 450).
+- Pintu retak (lebih gelap) saat HP di bawah 50%, lalu pecah jadi serpihan papan.
+- Skrip baru: scripts/house_door.gd
+
+JENDELA
+- Jendela sekarang punya ambang rendah (0.55 m) dan bukaan tinggi (sampai 2.8 m): tekan LONCAT untuk melewatinya.
+- Bot zombie/samurai ikut melompati ambang rendah saat mengejar target.
+
+FILE DIUBAH: scripts/main.gd, scripts/player.gd, scripts/bot.gd, scripts/house_door.gd (baru)

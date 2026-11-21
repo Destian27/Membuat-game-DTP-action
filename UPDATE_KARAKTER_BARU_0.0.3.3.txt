@@ -1,0 +1,27 @@
+UPDATE CRISIS ACTION DTP - v0.0.3.3 (karakter baru dari gambar buatan sendiri)
+
+1) KARAKTER DIGANTI (nama file & jumlah frame sama persis, jadi kode tidak perlu diubah)
+   - char_suster  : suster zombie berseragam perawat (topi + palang merah, tas P3K)
+   - char_zombie  : zombie biasa berkemeja abu, celana hitam, mata menyala
+   - char_gendut  : zombie gendut berkemeja cokelat, perut besar
+   - char_samurai : pria berjas panjang hitam bergaris biru + pedang berpendar merah-oranye
+   Tiap folder tetap berisi: idle_0-1, walk_0-3, shoot_0-1, die_0-3, jump_0-1, skill_0-1 (256x256, transparan).
+
+2) POTRET & FOTO HUD ikut diganti: portrait_biasa/gendut/suster.png (300x360) dan
+   face_biasa/gendut/suster/samurai.png (128x128), dibuat dari karakter baru.
+
+3) ASAL FRAME
+   - Idle, jalan, serang, loncat diambil dari pose di gambar kamu (tampak depan / 3/4).
+   - Skill gendut (tangan biru + perisai) dari gambar kamu. Skill suster & zombie biasa memakai aura hijau
+     yang ditambahkan lewat kode (karena pose di gambar saling tumpang tindih).
+   - Frame MATI zombie, gendut, suster dibuat dengan memiringkan pose berdiri sampai rebah (gambar kamu tidak
+     punya pose mati untuk mereka). Samurai memakai pose rebah asli dari gambarmu.
+
+CATATAN JUJUR
+   - Belum bisa dites di Godot (tidak ada Godot di lingkungan pembuatan). PNG baru diimport otomatis saat proyek dibuka.
+   - Latar gambar dihapus otomatis; beberapa tepi (rambut, topi suster, ujung pedang) bisa sedikit kasar. Kalau ada
+     frame yang jelek, kirim screenshot-nya dan nomor frame-nya, nanti dirapikan.
+   - Tangan first-person (zombie_hands_*, gendut_fists_*, suster_hands_*) BELUM diganti karena gambarmu tidak
+     berisi sudut pandang orang pertama.
+   - Karakter tim biru/merah, hero, dan warga (civil) tidak diubah.
+   - Sprite game selalu menghadap kamera, jadi hanya pose depan / 3/4 yang dipakai; pose belakang & samping tidak dipakai.

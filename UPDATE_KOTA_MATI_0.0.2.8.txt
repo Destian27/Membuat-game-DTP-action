@@ -1,0 +1,18 @@
+UPDATE CRISIS ACTION DTP - v0.0.2.8
+
+MODE ZOMBIE / KOTA MATI
+- Area map diubah dari arena 56 x 56 menjadi 250 x 250 unit (sekitar 20 kali luas area).
+- Jalan kota dan trotoar membentuk jaringan di seluruh area.
+- Hunian kecil, rumah keluarga, rumah dua lantai, dan bangunan landmark dibuat secara acak.
+- Pohon dan mobil terbengkalai ditambahkan sebagai dekorasi lingkungan.
+- Spawn manusia dan zombie dipilih secara acak dari titik aman di jalan, dengan jarak dari bangunan dan karakter lain.
+- Waypoint bot menyebar ke seluruh area; kamera dapat melihat lebih jauh.
+- Rumah memiliki collision sehingga karakter tidak menembus bangunan.
+
+GAMBAR
+- assets/zombie_houses_concept.png : lembar konsep variasi rumah.
+- assets/zombie_city_concept.png : konsep visual area kota luas.
+- assets/map_kota_mati_overview.png : peta tampak atas / layout kota.
+- assets/stage_zombie.png : gambar pratinjau baru pada lobi.
+
+Catatan: proyek disiapkan untuk Godot 4.x. Build runtime tidak dijalankan di lingkungan penyuntingan ini.

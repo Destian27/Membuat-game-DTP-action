@@ -1,0 +1,22 @@
+UPDATE CRISIS ACTION DTP - v0.0.2.9
+
+MODE ZOMBIE - MAP BARU
+- Map malam Kota Mati memakai langit malam biru, pencahayaan bulan, kabut biru tipis, dan aspal. Nuansa merah dari langit/lantai map lama dihilangkan.
+- Map malam dan map pagi dapat dipilih dengan tombol panah kiri/kanan pada kartu map di lobi. Pilihan map disimpan.
+- Map baru Distrik Pagi memiliki pencahayaan siang, jaringan jalan dengan jarak berbeda, warna bangunan lebih terang, serta taman di area pusat.
+- Kedua map memiliki area 400 x 400 unit (2,56 kali luas map 250 x 250 pada versi sebelumnya).
+- Spawn pemain dan bot dipilih acak dari jaringan jalan pada seluruh area; waypoint menyebar sampai wilayah pinggir kota.
+
+BANGUNAN YANG BISA DIMASUKI
+- Rumah memiliki ruang interior, pintu depan/belakang, dan jendela lantai dasar yang menjadi jalur masuk/keluar.
+- Rumah dua lantai memiliki lantai atas dan ramp tangga dengan collision agar karakter dapat naik dan turun.
+- Gedung besar, pohon, taman (map pagi), dan mobil terbengkalai mengisi area kota.
+
+FILE PENTING
+- scripts/main.gd: generator kota, rumah berinterior, tangga, spawn, lampu jalan.
+- scripts/stages.gd: konfigurasi Kota Mati - Malam dan Distrik Pagi.
+- scripts/lobby.gd dan scripts/game.gd: pemilihan serta penyimpanan map Zombie.
+- assets/stage_zombie.png dan assets/stage_zombie_morning.png: thumbnail pilihan map.
+- assets/map_kota_mati_overview.png dan assets/map_distrik_pagi_overview.png: peta overview.
+
+Catatan: proyek memakai Godot 4.x. Pemeriksaan runtime/editor Godot tidak dapat dilakukan di lingkungan penyuntingan ini karena executable Godot tidak tersedia. Buka proyek di Godot Editor untuk proses import asset otomatis dan pengujian akhir.

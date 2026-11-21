@@ -1,0 +1,22 @@
+UPDATE CRISIS ACTION DTP - v0.0.3.0
+
+RUMAH LEBIH DETAIL
+- Fasad memakai tekstur bata/plester triplanar bersama lis sudut, lis atap, kusen jendela, panel pintu, dan detail ventilasi.
+- Pintu depan membuka/menutup otomatis saat pemain mendekat. Struktur utama rumah tetap statis.
+- Perabot interior memiliki collision dan diletakkan di samping agar jalur pintu serta tangga tetap terbuka.
+
+TANGGA DAN LANTAI DUA
+- Geometri collision ramp diselaraskan dengan lantai bawah dan lantai dua, tidak mengambang.
+- Lantai dua diperluas dengan lubang tangga yang jelas; landing atas tersambung ke ramp.
+- Pegangan tangga memiliki collision samping. Anak tangga visual tidak menambah collider yang dapat membuat karakter tersangkut.
+- Player memakai floor snap dan batas sudut lantai lebih lebar sehingga tangga dapat dinaiki sambil berjalan, tanpa lompat.
+
+COLLISION DAN KINERJA
+- Dinding, lantai, ramp, perabot, pintu, mobil, batang pohon, dan tiang lampu diberi collision.
+- Mesh rumah/kota digabung per material; pepohonan menggunakan MultiMesh; collision kendaraan/pohon dipusatkan dalam satu StaticBody.
+- Kendaraan ditempatkan di tepi ruas jalan dan titik spawn menghindari pohon/mobil.
+- Lampu dinamis dipangkas untuk mengurangi beban rendering.
+
+PENGUJIAN
+- Pemeriksaan struktur berkas dan referensi kode dilakukan.
+- Pengujian menjalankan game di Godot Editor belum dapat dilakukan di lingkungan ini karena executable Godot tidak tersedia. Import aset dan uji gameplay akhir tetap perlu dilakukan di Godot 4.x.

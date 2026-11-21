@@ -1,0 +1,34 @@
+UPDATE CRISIS ACTION DTP - v0.0.3.2 (karakter realistis + HUD zombie gaya Crisis Action)
+
+1) KARAKTER REALISTIS (animasi TIDAK berubah)
+   - Nama file & jumlah frame sama persis, jadi bot.gd/player.gd tidak perlu mengubah animasi.
+   - Semua gambar dibuat ulang dengan tools/gen_realistic.py (pencahayaan, tekstur kulit/kain, luka, darah).
+   - char_blue / char_red : tentara tim biru & merah (helm, rompi, senapan).
+   - char_zombie / gendut / suster : zombie berkulit pucat, luka terbuka, mata menyala.
+   - char_samurai : armor merah berpelat + katana.
+   - BARU char_hero (rambut merah, jaket taktis), char_civil / civil2 / civil3 (orang biasa, 3 variasi).
+   - Tangan first-person zombie/gendut/suster (zombie_hands_*, gendut_fists_*, suster_hands_*) dibuat realistis.
+   - portrait_*.png (kartu pilih zombie) + face_*.png (foto kecil HUD) dibuat dari karakter baru.
+
+2) MODE ZOMBIE: HERO & ORANG BIASA
+   - Bot manusia: ~30% HERO (HP 130 + armor 100, tahan 2 serangan zombie sebelum terinfeksi), sisanya ORANG BIASA (HP 100).
+   - Kamu sebagai manusia = HERO. Armor ditampilkan di bar abu-abu HUD.
+
+3) LEVEL ZOMBIE
+   - Tiap berhasil menginfeksi manusia: LV +1 dan HP maks +120 (maks LV 9). Berlaku untuk pemain & bot.
+   - HUD kanan atas: LV.n dan HP+n. Pesan "Lv naik, HP bertambah!" + emblem TERINFEKSI.
+
+4) HUD ZOMBIE GAYA CRISIS ACTION (scripts/ca_hud.gd)
+   - Papan skor atas MANUSIA | RONDE+waktu | ZOMBIE, minimap kiri atas, pesan "<nama> mendapat darah pertama!",
+     tombol Otomatis ON/OFF (tembak/serang otomatis saat bidikan kena musuh), foto + bar HP kuning + bar kedua,
+     lencana peran (INDUK/BIASA/GENDUT/SUSTER/HERO), berkas cahaya teal di pandangan zombie.
+   - Hitung mundur "Virus biokimia setelah N detik menyebar......" (5 detik) sebelum Induk Zombie muncul.
+
+CATATAN JUJUR
+   - Belum bisa dijalankan di Godot oleh pembuatnya (tidak ada Godot di lingkungan pembuatan). Kode ditulis hati-hati,
+     tapi cek Output/Debugger saat pertama kali dibuka. File gambar baru akan di-import otomatis oleh editor.
+   - Gambar dibuat dengan kode, jadi "realistis" = semi-realistis berbayang, bukan foto/model 3D asli.
+   - Tombol jongkok & ping tidak ada (game tidak punya mekanik jongkok dan tidak online); diganti FPS asli.
+   - Warna merah peta malam tidak diubah; yang ditambah hanya HUD + cahaya teal.
+   - Tombol Otomatis hanya bisa disentuh di HP (mode desktop belum).
+   - Label di papan skor memakai bahasa game (MANUSIA/ZOMBIE), bukan HUMAN/GHOST.
