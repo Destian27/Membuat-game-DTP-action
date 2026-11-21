@@ -5,6 +5,11 @@ kumpulkan **koin** dan **diamond**, tim yang lebih dulu mencapai target kill men
 Semua tampilan dan animasi memakai gambar PNG di `assets/` (karakter per-frame, koin & diamond berputar,
 senjata, HUD, tekstur, langit). Mau ganti tampilan? Timpa PNG dengan nama yang sama.
 
+## Animasi 3D karakter dan VFX
+- Bot memakai model procedural 3D ber-skeleton untuk pose jalan, diam, serang, loncat, skill, sakit, dan mati.
+- Sprite PNG tetap dimuat sebagai fallback aset agar karakter lama tetap kompatibel dan seluruh peran mempertahankan bentuk visualnya.
+- Efek GPUParticles3D ditambahkan untuk ledakan darah, percikan senjata, percikan tebasan, dan cincin efek skill.
+
 ## Yang baru di v0.0.3.0 (rumah detail, tangga halus, collision & optimasi)
 - Rumah memiliki tekstur bata/plester triplanar, lis fondasi yang terputus di bukaan, lis sudut, kusen, jendela berpalang, pintu kayu berpanel, talang/tepian atap, dan ventilasi.
 - Pintu depan memakai animasi buka-tutup otomatis saat pemain mendekat; badan rumah tetap statis.

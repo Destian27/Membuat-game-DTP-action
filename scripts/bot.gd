@@ -3,6 +3,7 @@ extends CharacterBody3D
 # mencari musuh terdekat (pemain atau bot tim lawan), mengejar, menembak.
 
 const Fx = preload("res://scripts/fx.gd")
+const CharacterRig = preload("res://scripts/character_rig.gd")
 
 signal died(bot, headshot: bool, by_player: bool)
 signal converted(bot, by_player: bool)   # mode Zombie: manusia berubah jadi zombie
@@ -99,6 +100,7 @@ var lunge_len := 0.3
 var target = null           # musuh yang sedang dibidik (pemain / bot lawan)
 var sees := false
 var scan_timer := 0.0
+var character_rig
 
 
 func _ready() -> void:
@@ -138,6 +140,11 @@ func _ready() -> void:
 	sprite.double_sided = true
 	sprite.position.y = HEIGHT / 2.0
 	add_child(sprite)
+	sprite.visible = false
+	character_rig = CharacterRig.new()
+	character_rig.name = "CharacterRig3D"
+	add_child(character_rig)
+	character_rig.setup(role, ztype, team)
 
 	# bayangan di tanah
 	var shadow_tex = load("res://assets/shadow.png")
@@ -252,6 +259,9 @@ func set_role(r: String, zt: String = "") -> void:
 		"skill": _load_frames("skill", 2),
 	}
 	hh = HEIGHT * scl
+	if character_rig != null:
+		character_rig.scale_factor = scl
+		character_rig.apply_role(r, zt)
 	var idle: Array = frames["idle"]
 	if not idle.is_empty():
 		sprite.texture = idle[0]
@@ -492,14 +502,17 @@ func _melee_ai(dist: float) -> void:
 			invis_t = MIST_TIME
 			Fx.sfx3d(get_parent(), "res://assets/sfx/n_skill.wav", spos, 0.0)
 			Fx.puff(get_parent(), spos, "res://assets/spark.png", 3.2, 0.9, Color(0.4, 1.0, 0.5, 0.7))
+			Fx.skill_ring(get_parent(), spos, Color(0.35, 1.0, 0.42), 1.1)
 		elif ztype == "gendut":
 			shield_t = SHIELD_TIME
 			Fx.sfx3d(get_parent(), "res://assets/sfx/shield_on.wav", spos, 0.0)
 			Fx.puff(get_parent(), spos, "res://assets/spark.png", 2.4, 0.6, Color(0.4, 0.7, 1.0, 0.85))
+			Fx.skill_ring(get_parent(), spos, Color(0.35, 0.65, 1.0), 1.3)
 		else:
 			run_t = RUN_TIME
 			Fx.sfx3d(get_parent(), "res://assets/sfx/skill_run.wav", spos, 0.0)
 			Fx.puff(get_parent(), spos, "res://assets/spark.png", 2.0, 0.5, Color(1.0, 0.4, 0.3, 0.85))
+			Fx.skill_ring(get_parent(), spos, Color(1.0, 0.35, 0.22), 1.0)
 	if dist > REACH or atk_timer > 0.0 or target == null or not is_instance_valid(target):
 		return
 	var dmg := ZOMBIE_DMG
@@ -522,6 +535,9 @@ func _melee_ai(dist: float) -> void:
 	if role == "samurai" and dmg >= SAMURAI_HEAVY:
 		Fx.sfx3d(get_parent(), "res://assets/sfx/slash_big.wav", apos, 0.0)
 		Fx.puff(get_parent(), apos + Vector3(0.0, 0.2, 0.0), "res://assets/spark.png", 2.6, 0.35, Color(0.8, 0.95, 1.0, 0.9))
+		Fx.impact_spark(get_parent(), apos, Color(0.55, 0.85, 1.0), 16)
+	else:
+		Fx.impact_spark(get_parent(), apos, Color(0.72, 0.08, 0.08), 8)
 	Fx.voice3d(get_parent(), role, ztype, "impact", apos, -2.0)
 	var was_human: bool = zmode and role == "zombie" and str(target.get("role")) == "human"
 	if target.is_in_group("player"):
@@ -564,6 +580,7 @@ func _shoot(dist: float) -> void:
 	var mpos := global_position + Vector3(0.0, 1.3, 0.0)
 	Fx.sfx3d(get_parent(), "res://assets/sfx/bot_shot.wav", mpos, -2.0, randf_range(0.9, 1.1))
 	Fx.puff(get_parent(), mpos, "res://assets/muzzle.png", 0.5, 0.08)
+	Fx.impact_spark(get_parent(), mpos, Color(1.0, 0.72, 0.28), 5)
 	var chance := clampf((0.66 - dist * 0.024) * skill, 0.08, 0.75)
 	if target != null and is_instance_valid(target):
 		var tv = target.get("velocity")
@@ -642,6 +659,9 @@ func take_damage(amount: int, headshot: bool = false, _from_pos: Vector3 = Vecto
 
 func _die(headshot: bool, by_player: bool) -> void:
 	dead = true
+	if character_rig != null:
+		character_rig.set_motion(false, false, false, true, shield_t > 0.0, false, false, true, is_on_floor())
+	Fx.blood_burst(get_parent(), global_position + Vector3(0.0, 1.0, 0.0), 18)
 	remove_from_group("bots")
 	remove_from_group("team_" + team)
 	collision_layer = 0
@@ -668,6 +688,18 @@ func _die(headshot: bool, by_player: bool) -> void:
 func _process(delta: float) -> void:
 	if dead:
 		return
+	if character_rig != null:
+		character_rig.set_motion(
+			moving,
+			shoot_flash > 0.0,
+			lunge_t > 0.0 or skill_anim > 0.0,
+			hurt_flash > 0.0,
+			shield_t > 0.0,
+			run_t > 0.0,
+			invis_t > 0.0,
+			false,
+			is_on_floor()
+		)
 	anim_t += delta
 	shoot_flash = maxf(shoot_flash - delta, 0.0)
 	hurt_flash = maxf(hurt_flash - delta, 0.0)

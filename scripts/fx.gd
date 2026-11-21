@@ -50,6 +50,83 @@ static func puff(parent: Node, pos: Vector3, tex_path: String, size: float, life
 	tw.chain().tween_callback(s.queue_free)
 
 
+static func blood_burst(parent: Node, pos: Vector3, amount: int = 14) -> void:
+	var particles := GPUParticles3D.new()
+	particles.amount = amount
+	particles.lifetime = 0.55
+	particles.one_shot = true
+	particles.explosiveness = 0.72
+	particles.visibility_aabb = AABB(Vector3(-2.0, -1.0, -2.0), Vector3(4.0, 3.0, 4.0))
+	var mat := ParticleProcessMaterial.new()
+	mat.direction = Vector3(0.0, 1.0, 0.0)
+	mat.spread = 35.0
+	mat.initial_velocity_min = 1.8
+	mat.initial_velocity_max = 4.2
+	mat.gravity = Vector3(0.0, -9.0, 0.0)
+	mat.scale_min = 0.018
+	mat.scale_max = 0.045
+	mat.color = Color(0.72, 0.025, 0.025)
+	particles.process_material = mat
+	var mesh := SphereMesh.new()
+	mesh.radius = 0.07
+	mesh.height = 0.14
+	particles.draw_pass_1 = mesh
+	parent.add_child(particles)
+	particles.global_position = pos
+	particles.emitting = true
+	particles.finished.connect(particles.queue_free)
+
+
+static func impact_spark(parent: Node, pos: Vector3, tint: Color = Color(1.0, 0.75, 0.25), amount: int = 10) -> void:
+	var particles := GPUParticles3D.new()
+	particles.amount = amount
+	particles.lifetime = 0.32
+	particles.one_shot = true
+	particles.explosiveness = 0.85
+	particles.visibility_aabb = AABB(Vector3(-1.5, -1.5, -1.5), Vector3(3.0, 3.0, 3.0))
+	var mat := ParticleProcessMaterial.new()
+	mat.direction = Vector3(0.0, 1.0, 0.0)
+	mat.spread = 70.0
+	mat.initial_velocity_min = 2.0
+	mat.initial_velocity_max = 5.5
+	mat.gravity = Vector3(0.0, -4.0, 0.0)
+	mat.scale_min = 0.025
+	mat.scale_max = 0.075
+	mat.color = tint
+	particles.process_material = mat
+	var mesh := SphereMesh.new()
+	mesh.radius = 0.055
+	mesh.height = 0.11
+	particles.draw_pass_1 = mesh
+	parent.add_child(particles)
+	particles.global_position = pos
+	particles.emitting = true
+	particles.finished.connect(particles.queue_free)
+
+
+static func skill_ring(parent: Node, pos: Vector3, tint: Color, radius: float = 0.8) -> void:
+	var mesh_instance := MeshInstance3D.new()
+	var torus := TorusMesh.new()
+	torus.inner_radius = radius * 0.82
+	torus.outer_radius = radius
+	mesh_instance.mesh = torus
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = tint
+	mat.emission_enabled = true
+	mat.emission = tint
+	mat.emission_energy_multiplier = 2.5
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mesh_instance.material_override = mat
+	parent.add_child(mesh_instance)
+	mesh_instance.global_position = pos
+	mesh_instance.rotation.x = deg_to_rad(90.0)
+	var tw := mesh_instance.create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(mesh_instance, "scale", Vector3.ONE * 2.8, 0.55)
+	tw.tween_property(mat, "albedo_color:a", 0.0, 0.55)
+	tw.chain().tween_callback(mesh_instance.queue_free)
+
+
 # ------------------------------------------------------------------ suara khas karakter (v0.0.2.4)
 const SFX := "res://assets/sfx/"
 
